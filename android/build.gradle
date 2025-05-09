@@ -6,6 +6,24 @@ allprojects {
 }
 
 rootProject.buildDir = "../build"
+// use this to force all dependencies to use a java and kotlin version
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+            }
+        }
+        tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
+        }
+    }
+}
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
